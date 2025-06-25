@@ -4,8 +4,6 @@
 A decorative and responsive web tool to assess the strength of a password based on various security criteria. Built as part of **Task 03** for my internship at **SkillCraft Technology**.
 
 ![Screenshot](sc![password strength checker](https://github.com/user-attachments/assets/86ad6438-877a-4b34-abea-3fb5f6980f2e)
-![password strength checker](https://github.com/user-attachments/assets/86ad6438-877a-4b34-abea-3fb5f6980f2e)
-reenshot.png)
 
 ## 📌 Features
 
