@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Strength Checker</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .shape {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.3;
+    }
+
+    .shape1 {
+      width: 300px;
+      height: 300px;
+      top: -100px;
+      left: -100px;
+      background: #00f2fe;
+    }
+
+    .shape2 {
+      width: 250px;
+      height: 250px;
+      bottom: -80px;
+      right: -80px;
+      background: #4facfe;
+    }
+
+    .container {
+      position: relative;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      padding: 40px 30px;
+      max-width: 400px;
+      width: 90%;
+      z-index: 2;
+      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+      animation: float 5s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: linear-gradient(to right, #00f2fe, #4facfe);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      text-shadow: 0 0 10px rgba(255,255,255,0.2);
+    }
+
+    .password-wrapper {
+      position: relative;
+    }
+
+    .password-wrapper input {
+      width: 100%;
+      padding: 12px 40px 12px 12px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: rgba(62, 27, 27, 0.1);
+      color: #fff;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .password-wrapper input:focus {
+      border-color: #00f2fe;
+      box-shadow: 0 0 10px #00f2fe;
+    }
+
+    .toggle-eye {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .bar {
+      width: 100%;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .strength-level {
+      height: 100%;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    .weak { background: linear-gradient(to right, #ff4e50, #f9d423); }
+    .medium { background: linear-gradient(to right, #f9d423, #f83600); }
+    .strong { background: linear-gradient(to right, #4caf50, #00c9ff); }
+
+    .strength-text {
+      font-weight: bold;
+      font-size: 16px;
+      color: #fff;
+      text-shadow: 0 0 5px rgba(0,0,0,0.4);
+      text-align: center;
+    }
+
+    .emoji {
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Shapes -->
+  <div class="shape shape1"></div>
+  <div class="shape shape2"></div>
+
+  <div class="container">
+    <h2>🔐 Password Strength Checker</h2>
+    
+    <div class="password-wrapper">
+      <input type="password" id="password" placeholder="Type your password..." oninput="checkStrength()">
+      <span class="toggle-eye" onclick="togglePassword()">
+  <!-- Eye (Visible) -->
+  <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" fill="#fff" width="24" height="24" viewBox="0 0 24 24">
+    <path d="M12 5c-7.633 0-12 6.5-12 7s4.367 7 12 7 12-6.5 12-7-4.367-7-12-7zm0 12c-2.761 0-5-2.238-5-5s2.239-5 5-5 5 2.238 5 5-2.239 5-5 5zm0-8c-1.656 0-3 1.346-3 3s1.344 3 3 3 3-1.346 3-3-1.344-3-3-3z"/>
+  </svg>
+
+  <!-- Eye-slash (Hidden) -->
+  <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" fill="#fff" width="24" height="24" viewBox="0 0 24 24" style="display: none;">
+    <path d="M1.39 4.22l1.41-1.41 17 17-1.41 1.41-3.01-3.01C13.81 19.5 12 20 10 20c-5.72 0-10-6-10-6s1.93-2.88 5-4.71L1.39 4.22zM10 6c1.39 0 2.68.38 3.8 1.04L10 11.84 6.85 8.7C7.81 7.08 8.91 6 10 6zm9.14 5.29C20.07 11.12 22 14 22 14s-4.28 6-10 6c-1.78 0-3.45-.5-4.94-1.37l1.48-1.48C9.22 17.73 10.57 18 12 18c4.42 0 8-4 8-4s-.78-1.36-2.86-2.71z"/>
+  </svg>
+</span>
+    </div>
+
+    <div class="bar">
+      <div id="bar-fill" class="strength-level"></div>
+    </div>
+
+    <div id="strength-text" class="strength-text">Enter a password to check strength</div>
+  </div>
+
+  <script>
+    function checkStrength() {
+      const password = document.getElementById("password").value;
+      const bar = document.getElementById("bar-fill");
+      const text = document.getElementById("strength-text");
+
+      let strength = 0;
+      if (password.length >= 8) strength++;
+      if (/[A-Z]/.test(password)) strength++;
+      if (/[a-z]/.test(password)) strength++;
+      if (/[0-9]/.test(password)) strength++;
+      if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+      if (password.length === 0) {
+        bar.style.width = "0%";
+        bar.className = "strength-level";
+        text.innerHTML = "Enter a password to check strength";
+      } else if (strength <= 2) {
+        bar.style.width = "30%";
+        bar.className = "strength-level weak";
+        text.innerHTML = "Weak Password <span class='emoji'>❌</span>";
+      } else if (strength === 3 || strength === 4) {
+        bar.style.width = "70%";
+        bar.className = "strength-level medium";
+        text.innerHTML = "Medium Strength <span class='emoji'>⚠️</span>";
+      } else {
+        bar.style.width = "100%";
+        bar.className = "strength-level strong";
+        text.innerHTML = "Strong Password <span class='emoji'>✅</span>";
+      }
+    }
+
+    function togglePassword() {
+      const input = document.getElementById("password");
+      const icon = document.getElementById("eyeIcon");
+
+      if (input.type === "password") {
+        input.type = "text";
+        icon.innerHTML = `
+          <path d="M1 4.27L2.28 3 21 21.72 19.73 23l-2.06-2.06C15.51 21 13.81 21.5 12 21.5 4.37 21.5 0 15 0 15s1.91-2.84 5-4.64l-2-2c-2.53 1.86-4.14 4.32-4.14 4.32S4.37 25.5 12 25.5c2.09 0 4.03-.39 5.76-1.08L1 4.27z"/>`;
+      } else {
+        input.type = "password";
+        icon.innerHTML = `
+          <path d="M12 5c-7.633 0-12 6.5-12 7s4.367 7 12 7 12-6.5 12-7-4.367-7-12-7zm0 12c-2.761 0-5-2.238-5-5s2.239-5 5-5 5 2.238 5 5-2.239 5-5 5zm0-8c-1.656 0-3 1.346-3 3s1.344 3 3 3 3-1.346 3-3-1.344-3-3-3z"/>`;
+      }
+    }
+  </script>
+
+</body>
+</html>
+
+
