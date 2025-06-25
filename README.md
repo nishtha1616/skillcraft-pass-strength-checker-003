@@ -26,4 +26,4 @@ A decorative and responsive web tool to assess the strength of a password based 
 ## 🚀 How to Run Locally
 
 1. Clone this repository:
-   git clone https://github.com/yourusername/skillcraft-pass-strength-checker-003.git
+   git clone https://github.com/nishtha1616/skillcraft-pass-strength-checker-003.git
